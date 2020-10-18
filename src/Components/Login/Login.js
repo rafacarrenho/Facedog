@@ -1,29 +1,28 @@
-import React from 'react'
-import { Route, Switch } from 'react-router-dom'
-import LoginCreate from './LoginCreate'
-import LoginForm from './LoginForm'
-import LoginPasswordReset from './LoginPasswordReset'
-import LoginPasswordLost from './LoginPasswordLost'
+import React from 'react';
+import { Routes, Route, Navigate } from 'react-router-dom';
+import LoginForm from './LoginForm';
+import LoginCreate from './LoginCreate';
+import LoginPasswordLost from './LoginPasswordLost';
+import LoginPasswordReset from './LoginPasswordReset';
+import { UserContext } from '../../UserContext';
+import styles from './Login.module.css';
 
 const Login = () => {
-  return (
-    <div>
-      <Switch>
-        <Route path="/login/criar">
-          <LoginCreate />
-        </Route>
-        <Route path="/login/perdeu">
-          <LoginPasswordLost />
-        </Route>
-        <Route path="/login/resetar">
-          <LoginPasswordReset />
-        </Route>
-        <Route path="/">
-          <LoginForm />
-        </Route>
-      </Switch>
-    </div>
-  )
-}
+  const { login } = React.useContext(UserContext);
 
-export default Login
+  if (login === true) return <Navigate to="/conta" />;
+  return (
+    <section className={styles.login}>
+      <div className={styles.forms}>
+        <Routes>
+          <Route path="/" element={<LoginForm />} />
+          <Route path="criar" element={<LoginCreate />} />
+          <Route path="perdeu" element={<LoginPasswordLost />} />
+          <Route path="resetar" element={<LoginPasswordReset />} />
+        </Routes>
+      </div>
+    </section>
+  );
+};
+
+export default Login;
