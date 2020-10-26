@@ -30,10 +30,11 @@
   align-items: center;
   justify-content: center;
   grid-area: 1/1;
-  display: none;
+  display: flex;
   position: absolute;
   height: 100%;
   width: 100%;
+  opacity: 0;
   transition: 0.3s ease;
 }
 
@@ -47,5 +48,5 @@
 }
 
 .photo:hover .visualizacao {
-  display: flex;
+  opacity: 1;
 }
