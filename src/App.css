@@ -47,9 +47,13 @@ a {
 }
 
 .container {
-  max-width: 1200px;
+  max-width: 50rem;
   padding: 0 1rem;
   margin: 0 auto;
+}
+
+.mainContainer {
+  margin-top: 2rem;
 }
 
 .title {
