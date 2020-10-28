@@ -47,7 +47,7 @@ a {
 }
 
 .container {
-  max-width: 50rem;
+  max-width: 1200px;
   padding: 0 1rem;
   margin: 0 auto;
 }
@@ -99,4 +99,8 @@ a {
 
 .AppBody {
   flex: 1;
+}
+
+.VictoryContainer {
+  height: initial !important;
 }
