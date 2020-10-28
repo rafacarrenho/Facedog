@@ -16,7 +16,6 @@ const PhotoCommentsForm = ({ id, setComments, single }) => {
     if (response.ok) {
       setComment("");
       setComments((comments) => [...comments, json]);
-      console.log(json);
     }
   }
   return (
