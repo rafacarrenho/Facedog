@@ -19,6 +19,7 @@ const LoginPasswordLost = () => {
         url: urlPerdeu,
       });
       const { json } = await request(url, options);
+      console.log(json);
     }
   }
   return (
