@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ChangeEvent, useState } from "react";
 import styles from "./UserPhotoPost.module.css";
 import Input from "../Forms/Input";
 import useForm from "../../Hooks/useForm";
@@ -9,11 +9,16 @@ import { PHOTO_POST } from "../../Api";
 import { useNavigate } from "react-router-dom";
 import Head from "../Helper/Head";
 
+type Img = {
+  raw: File;
+  preview: string;
+};
+
 const UserPhotoPost = () => {
   const nome = useForm();
-  const peso = useForm("number");
-  const idade = useForm("number");
-  const [img, setImg] = React.useState({});
+  const peso = useForm("numero");
+  const idade = useForm("numero");
+  const [img, setImg] = useState<Img>({} as Img);
   const { data, error, loading, request } = useFetch();
   const navigate = useNavigate();
 
@@ -21,7 +26,7 @@ const UserPhotoPost = () => {
     if (data) navigate("/conta");
   }, [data, navigate]);
 
-  function handleSubmit(event) {
+  function handleSubmit(event: ChangeEvent<HTMLFormElement>) {
     event.preventDefault();
     const formData = new FormData();
     formData.append("img", img.raw);
@@ -30,15 +35,16 @@ const UserPhotoPost = () => {
     formData.append("idade", idade.value);
 
     const token = window.localStorage.getItem("token");
-    const { url, options } = PHOTO_POST(formData, token);
+    const { url, options } = PHOTO_POST(formData, token!);
 
     request(url, options);
   }
 
-  function handleImgChange({ target }) {
+  function handleImgChange(image: ChangeEvent<HTMLInputElement>) {
+    if (!image.target.files) return;
     setImg({
-      preview: URL.createObjectURL(target.files[0]),
-      raw: target.files[0],
+      preview: URL.createObjectURL(image.target.files[0]),
+      raw: image.target.files[0],
     });
   }
 

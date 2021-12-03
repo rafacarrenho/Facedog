@@ -1,20 +1,60 @@
-import React from "react";
+import React, {
+  createContext,
+  MouseEventHandler,
+  useCallback,
+  useState,
+} from "react";
 import { TOKEN_POST, TOKEN_VALIDATE_POST, USER_GET } from "./Api";
 import { useNavigate } from "react-router-dom";
 
-export const UserContext = React.createContext();
+export type Photo = {
+  id: string;
+  src: string;
+  title: string;
+  acessos: string;
+  author: string;
+  peso: string;
+  idade: string;
+};
 
-export const UserStorage = ({ children }) => {
-  const [data, setData] = React.useState(null);
-  const [login, setLogin] = React.useState(null);
-  const [loading, setLoading] = React.useState(false);
-  const [error, setError] = React.useState(null);
+type Comment = {
+  comment_ID: string;
+  comment_author: string;
+  comment_content: string;
+};
+
+export type Data = {
+  username: string;
+  photo: Photo;
+  comments: Comment[];
+  nome: string;
+  id: string;
+};
+
+type UserStorageType = {
+  userLogin: (username: string, password: string) => void;
+  userLogout: MouseEventHandler<HTMLButtonElement>;
+  data: Data | null;
+  error: boolean;
+  loading: boolean;
+  login: boolean;
+};
+
+export const UserContext = createContext<UserStorageType>(
+  {} as UserStorageType
+);
+
+export const UserStorage: React.FC = ({ children }) => {
+  const [data, setData] = useState(null);
+  const [login, setLogin] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
   const navigate = useNavigate();
 
-  const userLogout = React.useCallback(
+  const userLogout = useCallback(
     async function () {
       setData(null);
-      setError(null);
+      setError(false);
       setLoading(false);
       setLogin(false);
       window.localStorage.removeItem("token");
@@ -23,7 +63,7 @@ export const UserStorage = ({ children }) => {
     [navigate]
   );
 
-  async function getUser(token) {
+  async function getUser(token: string) {
     const { url, options } = USER_GET(token);
     const response = await fetch(url, options);
     const json = await response.json();
@@ -31,9 +71,9 @@ export const UserStorage = ({ children }) => {
     setLogin(true);
   }
 
-  async function userLogin(username, password) {
+  async function userLogin(username: string, password: string) {
     try {
-      setError(null);
+      setError(false);
       setLoading(true);
       const { url, options } = TOKEN_POST({ username, password });
       const tokenRes = await fetch(url, options);
@@ -41,8 +81,8 @@ export const UserStorage = ({ children }) => {
       const { token } = await tokenRes.json();
       window.localStorage.setItem("token", token);
       await getUser(token);
-      // navigate("conta");
-    } catch (err) {
+      navigate("conta");
+    } catch (err: any) {
       setError(err.message);
       setLogin(false);
     } finally {
@@ -55,7 +95,7 @@ export const UserStorage = ({ children }) => {
       const token = window.localStorage.getItem("token");
       if (token) {
         try {
-          setError(null);
+          setError(false);
           setLoading(true);
           const { url, options } = TOKEN_VALIDATE_POST(token);
           const response = await fetch(url, options);

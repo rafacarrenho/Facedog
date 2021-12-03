@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ChangeEvent } from "react";
 import Input from "../Forms/Input";
 import Button from "../Forms/Button";
 import useForm from "../../Hooks/useForm";
@@ -23,7 +23,7 @@ const LoginPasswordReset = () => {
     if (login) setLogin(login);
   }, []);
 
-  async function handleSubmit(event) {
+  async function handleSubmit(event: ChangeEvent<HTMLFormElement>) {
     event.preventDefault();
     if (password.validate()) {
       const { url, options } = PASSWORD_RESET({
@@ -32,7 +32,7 @@ const LoginPasswordReset = () => {
         password: password.value,
       });
       const { response } = await request(url, options);
-      if (response.ok) navigate("/login");
+      if (response?.ok) navigate("/login");
     }
   }
 

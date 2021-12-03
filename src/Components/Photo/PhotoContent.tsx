@@ -2,11 +2,16 @@ import React from "react";
 import { Link } from "react-router-dom";
 import styles from "./PhotoContent.module.css";
 import PhotoComments from "./PhotoComments";
-import { UserContext } from "../../UserContext";
+import { Data, UserContext } from "../../UserContext";
 import PhotoDelete from "./PhotoDelete";
 import Image from "../Helper/Image";
 
-const PhotoContent = ({ data, single }) => {
+type PhotoContentProps = {
+  data: Data;
+  single?: boolean;
+};
+
+const PhotoContent = ({ data, single }: PhotoContentProps) => {
   const user = React.useContext(UserContext);
   const { photo, comments } = data;
   return (

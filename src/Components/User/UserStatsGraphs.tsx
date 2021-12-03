@@ -1,12 +1,26 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./UserStatsGraphs.module.css";
 import { VictoryPie, VictoryChart, VictoryBar } from "victory";
 
-const UserStatsGraphs = ({ data }) => {
-  const [graph, setGraph] = React.useState([]);
-  const [total, setTotal] = React.useState(0);
+type Graph = {
+  x: string;
+  y: number;
+};
 
-  React.useEffect(() => {
+type Data = {
+  title: string;
+  acessos: string;
+};
+
+type UserStatsGraphsProps = {
+  data: Data[];
+};
+
+const UserStatsGraphs = ({ data }: UserStatsGraphsProps) => {
+  const [graph, setGraph] = useState<Graph[]>([] as Graph[]);
+  const [total, setTotal] = useState(0);
+
+  useEffect(() => {
     if (typeof data !== "undefined" && data.length > 0) {
       const graphData = data.map((item) => {
         return {
@@ -20,6 +34,7 @@ const UserStatsGraphs = ({ data }) => {
       setGraph(graphData);
     }
   }, [data]);
+
   return (
     <div className={`${styles.graph} animeLeft`}>
       <div className={`${styles.total} ${styles.graphItem}`}>

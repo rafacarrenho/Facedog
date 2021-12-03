@@ -17,7 +17,7 @@ const Loading = () => {
     };
   }, []);
 
-  function displayStep(i) {
+  function displayStep(i: number) {
     return {
       display: step === i ? "block" : "none",
     };

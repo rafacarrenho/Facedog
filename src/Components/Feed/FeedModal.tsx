@@ -5,8 +5,14 @@ import styles from "./FeedModal.module.css";
 import Error from "../Helper/Error";
 import Loading from "../Helper/Loading";
 import PhotoContent from "../Photo/PhotoContent";
+import { Data, Photo } from "../../UserContext";
 
-const FeedModal = ({ photo, setModalPhoto }) => {
+type FeedModalProps = {
+  photo: Photo;
+  setModalPhoto: (item: Photo | null) => void;
+};
+
+const FeedModal = ({ photo, setModalPhoto }: FeedModalProps) => {
   const { data, error, loading, request } = useFetch();
 
   React.useEffect(() => {
@@ -14,16 +20,17 @@ const FeedModal = ({ photo, setModalPhoto }) => {
     request(url, options);
   }, [photo, request]);
 
-  function handleOutsideClick(event) {
+  function handleOutsideClick(event: React.MouseEvent<HTMLDivElement>) {
     if (event.target === event.currentTarget) {
       setModalPhoto(null);
     }
   }
+
   return (
     <div className={styles.modal} onClick={handleOutsideClick}>
       {error && <Error error={error} />}
       {loading && <Loading />}
-      {data && <PhotoContent data={data} />}
+      {data && <PhotoContent data={data as Data} />}
     </div>
   );
 };

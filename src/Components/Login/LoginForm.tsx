@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ChangeEvent } from "react";
 import { Link } from "react-router-dom";
 import Input from "../Forms/Input";
 import Button from "../Forms/Button";
@@ -14,7 +14,7 @@ const LoginForm = () => {
 
   const { userLogin, error, loading } = React.useContext(UserContext);
 
-  async function handleSubmit(event) {
+  async function handleSubmit(event: ChangeEvent<HTMLFormElement>) {
     event.preventDefault();
 
     if (username.validate() && password.validate()) {
@@ -33,7 +33,7 @@ const LoginForm = () => {
         ) : (
           <Button>Entrar</Button>
         )}
-        <Error error={error && "Dados incorretos."} />
+        <Error error={!!error ? "Dados incorretos." : ""} />
       </form>
       <Link className={styles.perdeu} to="/login/perdeu">
         Perdeu a Senha?

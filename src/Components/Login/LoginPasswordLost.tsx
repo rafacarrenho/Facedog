@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ChangeEvent } from "react";
 import Input from "../Forms/Input";
 import Button from "../Forms/Button";
 import useForm from "../../Hooks/useForm";
@@ -11,9 +11,10 @@ const LoginPasswordLost = () => {
   const login = useForm();
   const urlPerdeu = window.location.href.replace("perdeu", "resetar");
   const { data, loading, error, request } = useFetch();
-  async function handleSubmit(event) {
+
+  async function handleSubmit(event: ChangeEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (login.validate) {
+    if (login.validate()) {
       const { url, options } = PASSWORD_LOST({
         login: login.value,
         url: urlPerdeu,

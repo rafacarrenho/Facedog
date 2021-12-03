@@ -1,12 +1,25 @@
-import React from "react";
+import React, { Dispatch, SetStateAction } from "react";
 import { PHOTOS_GET } from "../../Api";
 import useFetch from "../../Hooks/useFetch";
 import FeedPhotosItem from "./FeedPhotosItem";
 import Error from "../Helper/Error";
 import Loading from "../Helper/Loading";
 import styles from "./FeedPhotos.module.css";
+import { Photo } from "../../UserContext";
 
-const FeedPhotos = ({ page, user, setModalPhoto, setInfinite }) => {
+type FeedPhotosProps = {
+  page: number;
+  user: string;
+  setModalPhoto: Dispatch<SetStateAction<Photo | null>>;
+  setInfinite: (value: boolean) => void;
+};
+
+const FeedPhotos = ({
+  page,
+  user,
+  setModalPhoto,
+  setInfinite,
+}: FeedPhotosProps) => {
   const { data, loading, error, request } = useFetch();
 
   React.useEffect(() => {
@@ -27,7 +40,7 @@ const FeedPhotos = ({ page, user, setModalPhoto, setInfinite }) => {
     return (
       <div>
         <ul className={`${styles.feed} animeLeft`}>
-          {data.map((photo) => (
+          {data.map((photo: Photo) => (
             <FeedPhotosItem
               key={photo.id}
               photo={photo}
@@ -37,7 +50,7 @@ const FeedPhotos = ({ page, user, setModalPhoto, setInfinite }) => {
         </ul>
       </div>
     );
-  else return null;
+  return null;
 };
 
 export default FeedPhotos;
